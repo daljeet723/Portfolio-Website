@@ -1,0 +1,70 @@
+.footer{
+    background-color: rgba(26,26,26);
+    padding:3vmax;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+}
+.footer> div> h5{
+    color:#F5F5F5;
+    border-bottom: 1px solid #F5F5F5;
+    width:140px;
+    margin-bottom: 20px;
+    padding:10px 0;
+
+}
+/* by default description has p tag  */
+.footer > div >p{
+    color:#F5F5F5;
+    width:70%;
+}
+.footer> div> h6{
+    color: #F5F5F5;
+    padding:10px 0;
+}
+.footer> div:last-child{
+    display:inline-block;
+    /* flex-direction:; */
+    align-items: center;
+    transition: all 0.3s;
+}
+.footer>div > a{
+    font-size: 3vmax;
+    color:#F5F5F5;
+   
+}
+.footer> div > a:nth-child(2){
+   
+    margin:8px;
+}
+.footer> div > a:nth-child(3){
+    margin:8px;
+}
+.footer> div > a:nth-child(2):hover{
+    color:rgb(54,88,226);
+}
+.footer> div > a:nth-child(3):hover{
+    color:rgb(241,59,59);
+}
+
+.footerContactBtn{
+    background-color: #F5F5F5;
+    color:black;
+    width:120px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    padding:5px;
+    margin: 2vmax 0;
+    border: 1px solid #F5F5F5;
+    transition: all 0.5s;
+    
+}
+.footerContactBtn >p{
+    color:black;
+}
+.footerContactBtn:hover{
+    background-color: unset;
+}
+.footerContactBtn >p:hover{
+    color:#F5F5F5;
+}
