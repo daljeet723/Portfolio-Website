@@ -1,7 +1,7 @@
 import { User } from "../model/User.js";
 
 import jwt from "jsonwebtoken";
-import { sendToken } from "../utils/jwtToken.js"
+
 import { sendMail } from "../utils/sendMail.js";
 
 import cloudinary from "cloudinary";
@@ -29,17 +29,17 @@ export const login = async (req, res) => {
         }
 
 
-        // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
-        // //cookie(token) will expire after 10 mins 
-        // res.status(200).cookie("token", token, {
-        //     expires: new Date(Date.now() + 600000),
-        //     httpOnly: true
-        // }).json({
-        //     success: true,
-        //     message: "Logged in successfully"
-        // });
-        sendToken(user, 200, res);
+        //cookie(token) will expire after 5 days
+        res.status(200).cookie("token", token, {
+            expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+            httpOnly: true
+        }).json({
+            success: true,
+            message: "Logged in successfully"
+        });
+
 
 
     } catch (error) {
@@ -74,13 +74,19 @@ export const logout = async (req, res) => {
 
 };
 
-export const getAllUsers = async (req, res, next) => {
-
-    const users = await User.find();
-    res.status(200).json({
-        success: true,
-        users
-    });
+export const getAllUsers = async (req, res,next) => {
+    try {
+        const users = await User.find();
+        res.status(200).json({
+            success: true,
+            users
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
 };
 
 // export const getUser = async (req, res) => {
