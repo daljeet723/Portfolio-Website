@@ -5,9 +5,25 @@ import About from "./components/about/About";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import Projects from "./components/projects/Projects";
-import Contact from "./components/contact/Contact"
-import Login from "./components/login/Login"
+import Contact from "./components/contact/Contact";
+import Login from "./components/login/Login";
+import {useDispatch} from "react-redux"
+import { useEffect } from 'react';
+import { getUser, loadUser } from './actions/user';
+
+
 function App() {
+
+  //REDUX .. getUser from Actions file
+  const dispatch = useDispatch();
+
+  //when user opens website by deafult he will be logged in 
+  useEffect(()=>{
+    dispatch(getUser());
+    dispatch(loadUser());
+  },[dispatch ]);
+
+
   return (
     <Router>
     <Header/>
