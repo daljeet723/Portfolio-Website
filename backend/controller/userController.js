@@ -76,7 +76,7 @@ export const logout = async (req, res) => {
 
 export const getAllUsers = async (req, res,next) => {
     try {
-        const users = await User.find();
+        const users = await User.findOne().select("-password -email");
         res.status(200).json({
             success: true,
             users
@@ -105,7 +105,7 @@ export const getAllUsers = async (req, res,next) => {
 
 // }
 
-export const myProfile = async (req, res) => {
+export const myProfile = async (req, res,next) => {
     try {
         const user = await User.findById(req.user._id);
         // isAuthenticate has been already called before this and then find user by id getting from isAuthenticated
