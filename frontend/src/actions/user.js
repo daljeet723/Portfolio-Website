@@ -104,3 +104,40 @@ export const loadUser = () => async (dispatch) => {
         });
     }
 }
+
+//UPDATE USER
+export const updateUser = (name, email, password, about, skills) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "UPDATE_USER_REQUEST"
+
+        });
+        
+          //sending email and password as login route accepts email and pswd as parameter
+        const { data } = await axios.put("/api/v1/admin/updateUser", {
+            name, 
+            email,
+            password,
+            about, 
+            skills
+        },
+            {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }
+        );
+
+        dispatch({
+            type: "UPDATE_USER_SUCCESS",
+            payload: data.message
+
+        });
+    } catch (error) {
+        dispatch({
+            type: "UPDATE_USER_FAILURE",
+            payload: error.response.data.message
+
+        });
+    }
+};
