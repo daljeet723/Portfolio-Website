@@ -3,8 +3,8 @@ import { Button, Typography } from "@mui/material";
 import { AiOutlineProject } from "react-icons/ai";
 import { MdTimeline } from "react-icons/md";
 import { Link } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {logoutUser} from "../../actions/user"
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, updateUser } from "../../actions/user"
 import "./Admin.css"
 import { useAlert } from 'react-alert';
 
@@ -13,7 +13,9 @@ const AdminPanel = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const {message, error} = useSelector(state =>state.login )
+  const { message:loginMessage } = useSelector(state => state.login);
+  const { message,error,loading } = useSelector(state => state.updateUser)
+
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -73,22 +75,30 @@ const AdminPanel = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(updateUser(
+      name, email, password, about, skills
+    ))
   }
 
   const logoutHandler = (e) => {
-  dispatch(logoutUser());
-   }
+    dispatch(logoutUser());
+  }
 
-   useEffect(()=>{
-    if(error){
-        alert.error(error);
-        dispatch({type:"CLEAR_ERRORS"});
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch({ type: "CLEAR_ERRORS" });
     }
-    if(message){
-        alert.success(message);
-        dispatch({type:"CLEAR_MESSAGE"});
+    if (message) {
+      alert.success(message);
+      dispatch({ type: "CLEAR_MESSAGE" });
     }
-},[alert, error, message,dispatch]);
+
+    if (loginMessage) {
+      alert.success(loginMessage);
+      dispatch({ type: "CLEAR_MESSAGE" });
+    }
+  }, [alert, error, message, dispatch,loginMessage]);
 
   return (
     <div className="adminPanel">
@@ -241,11 +251,11 @@ const AdminPanel = () => {
           <Link to="/admin/timeline">
             TIMELINE <MdTimeline />
           </Link>
-          <Link to="admin/project">
+          <Link to="/admin/project">
             PROJECTS <AiOutlineProject />
           </Link>
 
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disabled={loading}>
             Update
           </Button>
         </form>

@@ -160,9 +160,9 @@ export const updateUser = async (req, res) => {
         //as skills is [] so we will be passing [] object
         if (skills) {
             if (skills.image1) {
-
+             
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image1.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image1.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image1, {
@@ -171,7 +171,7 @@ export const updateUser = async (req, res) => {
 
                 //update data in database
                 user.skills.image1 = {
-                    public_id: myCloud.public_id,
+                    public_id: myCloud.public_id ,
                     url: myCloud.secure_url
                 }
             }
@@ -179,7 +179,7 @@ export const updateUser = async (req, res) => {
             if (skills.image2) {
 
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image2.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image2.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image2, {
@@ -196,7 +196,7 @@ export const updateUser = async (req, res) => {
             if (skills.image3) {
 
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image3.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image3.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image3, {
@@ -213,7 +213,7 @@ export const updateUser = async (req, res) => {
             if (skills.image4) {
 
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image4.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image4.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image4, {
@@ -230,7 +230,7 @@ export const updateUser = async (req, res) => {
             if (skills.image5) {
 
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image5.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image5.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image5, {
@@ -247,7 +247,7 @@ export const updateUser = async (req, res) => {
             if (skills.image6) {
 
                 //delete prev images uploaded from cloudinary that takes up sapce 
-                await cloudinary.v2.uploader.destroy(skills.image6.public_id);
+                await cloudinary.v2.uploader.destroy(user.skills.image6.public_id);
 
                 //upload new image in cloudinary
                 const myCloud = await cloudinary.v2.uploader.upload(skills.image6, {
@@ -408,12 +408,12 @@ export const deleteProject = async (req, res) => {
         const user = await User.findById(req.user._id);
         // isAuthenticate has been already called before this and then find user by id getting from isAuthenticated
 
-        const project = user.projects.filter((item) => item._id !== id);
+        const project = user.projects.find((item) => item._id == id);
 
         await cloudinary.v2.uploader.destroy(project.image.public_id);
 
         //filter and display projects array after deducting id that matches req.params
-        user.projects = user.projects.filter((item) => item._id !== id);
+        user.projects = user.projects.filter((item) => item._id != id);
 
         await user.save();
 

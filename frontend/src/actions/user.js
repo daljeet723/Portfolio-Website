@@ -29,8 +29,8 @@ export const logoutUser = () => async (dispatch) => {
             type: "LOGOUT_REQUEST"
 
         });
-        
-      
+
+
         const { data } = await axios.get("/api/v1/logout");
 
         dispatch({
@@ -54,8 +54,8 @@ export const loginUser = (email, password) => async (dispatch) => {
             type: "LOGIN_REQUEST"
 
         });
-        
-          //sending email and password as login route accepts email and pswd as parameter
+
+        //sending email and password as login route accepts email and pswd as parameter
         const { data } = await axios.post("/api/v1/login", {
             email,
             password,
@@ -87,8 +87,8 @@ export const loadUser = () => async (dispatch) => {
         dispatch({
             type: "LOAD_USER_REQUEST"
         });
-        
-      
+
+
         const { data } = await axios.get("/api/v1/me");
 
         dispatch({
@@ -112,19 +112,19 @@ export const updateUser = (name, email, password, about, skills) => async (dispa
             type: "UPDATE_USER_REQUEST"
 
         });
-        
-          //sending email and password as login route accepts email and pswd as parameter
+
+        //sending email and password as login route accepts email and pswd as parameter
         const { data } = await axios.put("/api/v1/admin/updateUser", {
-            name, 
+            name,
             email,
             password,
-            about, 
+            about,
             skills
         },
             {
                 headers: {
                     "content-type": "application/json"
-                }
+                },
             }
         );
 
@@ -141,3 +141,103 @@ export const updateUser = (name, email, password, about, skills) => async (dispa
         });
     }
 };
+
+
+export const addTimeline = (title, description, date) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "ADD_TIMELINE_REQUEST"
+        });
+
+        const { data } = await axios.post("/api/v1/admin/timeline/add", {
+            title, description, date
+        },
+            {
+                headers: {
+                    "content-type": "application/json"
+                },
+            }
+        );
+
+        dispatch({
+            type: "ADD_TIMELINE_SUCCESS",
+            payload: data.message
+        })
+    } catch (error) {
+        dispatch({
+            type: "ADD_TIMELINE_FAILURE",
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+export const deleteTimeline = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "DELETE_TIMELINE_REQUEST"
+        });
+
+        const { data } = await axios.delete("/api/v1/admin/timeline/" + id);
+
+        dispatch({
+            type: "DELETE_TIMELINE_SUCCESS",
+            payload: data.message
+        })
+    } catch (error) {
+        dispatch({
+            type: "DELETE_TIMELINE_FAILURE",
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+export const addProject =
+    (url, title, image, description, techStack) => async (dispatch) => {
+        try {
+            dispatch({
+                type: "ADD_PROJECT_REQUEST"
+            });
+
+            const { data } = await axios.post("/api/v1/admin/project/add", {
+                url, title, image, description, techStack
+            },
+                {
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                }
+            );
+
+            dispatch({
+                type: "ADD_PROJECT_SUCCESS",
+                payload: data.message
+            })
+        } catch (error) {
+            dispatch({
+                type: "ADD_PROJECT_FAILURE",
+                payload: error.response.data.message
+            })
+        }
+    }
+
+export const deleteProject = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "DELETE_PROJECT_REQUEST"
+        });
+
+        const { data } = await axios.delete(`/api/v1/admin/project/${id}`);
+      
+        dispatch({
+            type: "DELETE_PROJECT_SUCCESS",
+            payload: data.message
+        })
+    } catch (error) {
+        dispatch({
+            type: "DELETE_PROJECT_FAILURE",
+            payload: error.response.data.message
+        })
+    }
+}
