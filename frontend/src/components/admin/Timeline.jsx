@@ -8,96 +8,94 @@ import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 
 const Timeline = () => {
-    const dispatch = useDispatch();
-    const alert = useAlert();
+  const { message, error, loading } = useSelector((state) => state.updateUser);
+  const { message: loginMessage } = useSelector((state) => state.login);
+  const { user } = useSelector((state) => state.user);
 
-    const { message, error, loading } = useSelector(state => state.updateUser);
-    const { message: loginMessage } = useSelector((state) => state.login);
-    
-    const{user} = useSelector(state => state.user);
-    
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [date, setDate] = useState("");
+  const dispatch = useDispatch();
+  const alert = useAlert();
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
 
-        //wait untill timeline is added to "await",
-        //when addTimeline is completed, only after then getUser will be called
-        await dispatch(addTimeline(title, description, date));
-        //to update data immediately after adding new timeline call getUser()
-        dispatch(getUser());
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await dispatch(addTimeline(title, description, date));
+    dispatch(getUser());
+  };
+  const deleteHandler = async (id) => {
+    await dispatch(deleteTimeline(id));
+    dispatch(getUser());
+  };
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch({ type: "CLEAR_ERRORS" });
+    }
+    if (message) {
+      alert.success(message);
+      dispatch({ type: "CLEAR_MESSAGE" });
     }
 
-    const deleteHandler = async (id) => {
-        await dispatch(deleteTimeline(id));
-        dispatch(getUser());
+    if (loginMessage) {
+      alert.success(loginMessage);
+      dispatch({ type: "CLEAR_MESSAGE" });
     }
+  }, [alert, error, message, dispatch, loginMessage]);
 
-    useEffect(() => {
-        if (error) {
-            alert.error(error);
-            dispatch({ type: "CLEAR_ERRORS" });
-        }
-        if (message) {
-            alert.success(message);
-            dispatch({ type: "CLEAR_MESSAGE" })
-        }
-        if (loginMessage) {
-            alert.success(loginMessage);
-            dispatch({ type: "CLEAR_MESSAGE" });
-          }
-    }, [alert, error, message, dispatch,loginMessage])
+  return (
+    <div className="adminPanel">
+      <div className="adminPanelContainer">
+        <Typography variant="h4">
+          <p>A</p>
+          <p>D</p>
+          <p>M</p>
+          <p>I</p>
+          <p style={{ marginRight: "1vmax" }}>N</p>
 
-    return (
-        <div className="adminPanel">
-            <div className="adminPanelContainer">
-                <Typography variant="h4">
-                    <p>T</p>
-                    <p>I</p>
-                    <p>M</p>
-                    <p>E</p>
-                    <p style={{ marginRight: "1vmax" }}>L</p>
+          <p>P</p>
+          <p>A</p>
+          <p>N</p>
+          <p>E</p>
+          <p>L</p>
+        </Typography>
 
-                    <p>I</p>
-                    <p>N</p>
-                    <p>E</p>
-                </Typography>
-                <form onSubmit={submitHandler}>
-                    <input type="text"
-                        placeholder='Title'
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className='adminPanelInputs'>
-                    </input>
+        <form onSubmit={submitHandler}>
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="adminPanelInputs"
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="adminPanelInputs"
+          />
+          <input
+            type="date"
+            placeholder="Date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="adminPanelInputs"
+          />
 
-                    <input type="text"
-                        placeholder='Description'
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className='adminPanelInputs'>
-                    </input>
+          <Link to="/account">
+            BACK <MdKeyboardBackspace />
+          </Link>
 
-                    <input type="date"
-                        placeholder='Date'
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className='adminPanelInputs'>
-                    </input>
+          <Button type="submit" variant="contained" disabled={loading}>
+            Add
+          </Button>
+        </form>
 
-                    {/* account path given in App.js  */}
-                    <Link to="/account">
-                        Back<MdKeyboardBackspace />
-                    </Link>
-
-                    <Button type="submit" variant="contained" disabled={loading}>
-                        Add Timeline
-                    </Button>
-                </form>
-
-                <div className="adminPanelYoutubeVideos">
-          {user &&
+        <div className="adminPanelYoutubeVideos">
+        {user &&
             user.timeline &&
             user.timeline.map((item) => (
               <div className="youtubeCard" key={item._id}>
@@ -122,10 +120,9 @@ const Timeline = () => {
               </div>
             ))}
         </div>
+      </div>
+    </div>
+  );
+};
 
-            </div>
-        </div>
-    );
-}
-
-export default Timeline
+export default Timeline;

@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
+import { Link } from "react-router-dom";
 import "./Home.css"
 import * as THREE from "three";
+import { MouseOutlined } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import TimeLine from "../timeline/TimeLine"
+
 
 
 import moonImage from "../../images/moon.jpg";
@@ -18,10 +21,12 @@ import {
   SiExpress,
   SiCss3,
   SiHtml5,
-  SiThreedotjs,
+  SiThreedotjs
 } from "react-icons/si";
 
-const Home = () => {
+
+const Home = ({timelines, skills}) => {
+
   // THREE JS 3D effect, follow in sequence 
   // 1st set scene
   // 2nd set camera as perspective type here
@@ -108,14 +113,55 @@ const Home = () => {
     };
     animate();
 
+    return  window.addEventListener("scroll",() =>{
+      camera.rotation.z = window.scrollY * 0.001;
+      camera.rotation.y = window.scrollY * 0.003;
+
+      const skillsBox = document.getElementById("homeSkillsBox");
+      if (window.scrollY > 1500) {
+        skillsBox.style.animationName = "homeSkillsBoxAnimationOn";
+      } else {
+        skillsBox.style.animationName = "homeSkillsBoxAnimationOff";
+      }
+
+    });
+
   }, []);
   return (
     <div className="home">
       {/* using canvas we will create 3d effect by using three js */}
       <canvas className="homeCanvas"></canvas>
+
+      <div className="homeCanvasContainer">
+        <Typography variant="h1">
+          <p>D</p>
+          <p>A</p>
+          <p>L</p>
+          <p>J</p>
+          <p>E</p>
+          <p>E</p>
+          <p>T</p>
+        </Typography>
+
+        <div className="homeCanvasBox">
+          <Typography variant="h2">DESIGNER</Typography>
+          <Typography variant="h2">DEVELOPER</Typography>
+          <Typography variant="h2">DEVOPS</Typography>
+          <Typography variant="h2">AZURE CLOUD</Typography>
+        </div>
+
+        <Link to="/projects">VIEW WORK</Link>
+      </div>
+
+      <div className="homeScrollBtn">
+        <MouseOutlined />
+      </div>
+
       <div className="homeContainer">
-        <Typography variant="h3">TIMELINE</Typography>
-        <TimeLine timelines={[1, 2, 3, 4]} />
+        <Typography variant="h3">TIMELINE</Typography> 
+        <TimeLine timelines={timelines} />
+ 
+       
       </div>
       <div className="homeSkills">
         <Typography variant="h3">SKILLS</Typography>
@@ -123,32 +169,32 @@ const Home = () => {
         {/* div homeCubeSkills that will represnt all our skills */}
         <div className="homeCubeSkills">
           <div className="homeCubeSkillsFaces homeCubeSkillsFace1">
-            <img src="https://cdn.pixabay.com/photo/2012/01/09/09/10/sun-11582_1280.jpg" alt="Face1" />
+            <img src={skills.image1.url} alt="Face1"/>
           </div>
 
           <div className="homeCubeSkillsFaces homeCubeSkillsFace2">
-            <img src="https://cdn.pixabay.com/photo/2022/03/10/13/59/astronaut-7059915_1280.png" alt="Face2" />
+          <img src={skills.image2.url} alt="Face2"/>
           </div>
 
           <div className="homeCubeSkillsFaces homeCubeSkillsFace3">
-            <img src="https://media.istockphoto.com/id/1414208547/vector/volumetric-gold-star-five-pointed-star-3d-quality-and-rating-symbol.jpg?s=1024x1024&w=is&k=20&c=3DGr3MEt5D_7OwnOUK5o0hnxi5SiKCQSi8yd6aFbjMg=" alt="Face3" />
+          <img src={skills.image3.url} alt="Face3"/>
           </div>
 
           <div className="homeCubeSkillsFaces homeCubeSkillsFace4">
-            <img src="https://cdn.pixabay.com/photo/2016/03/29/20/40/colorful-1289308_1280.png" alt="Face4" />
+          <img src={skills.image4.url} alt="Face4"/>
           </div>
 
           <div className="homeCubeSkillsFaces homeCubeSkillsFace5">
-            <img src="https://cdn.pixabay.com/photo/2020/02/10/05/29/star-4835340_1280.png" alt="Face5" />
+          <img src={skills.image5.url} alt="Face5"/>
           </div>
 
           <div className="homeCubeSkillsFaces homeCubeSkillsFace6">
-            <img src="https://cdn.pixabay.com/photo/2013/07/13/11/26/star-158137_1280.png" alt="Face6" />
+          <img src={skills.image6.url} alt="Face6"/>
           </div>
         </div>
         <div className="homeCubeShadow"></div>
         {/* div to show skil icons on left side */}
-        <div className="homeSkillsBox">
+        <div className="homeSkillsBox" id ="homeSkillsBox">
           <SiCplusplus />
           <SiHtml5 />
           <SiCss3 />

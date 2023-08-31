@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
     about:{
         name:String,
         title:String,
-        subtitile:String,
+        subtitle:String,
         description:String,
         quote:String,
         avatar:{

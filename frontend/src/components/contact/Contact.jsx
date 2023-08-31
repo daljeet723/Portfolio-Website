@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Contact.css"
 import { Button, Typography } from "@mui/material"
+import { useDispatch, useSelector } from 'react-redux'
+import { useAlert } from 'react-alert'
+import { contactUser } from '../../actions/user'
 
 
 const Contact = () => {
+
+    const dispatch = useDispatch();
+    const alert = useAlert();
+    const {loading, error, message:alertMessage} = useSelector(state =>state.updateUser);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -11,7 +18,21 @@ const Contact = () => {
 
     const contactFormHandler = (e) => {
         e.preventDefault();
+        dispatch(contactUser(name, email,message));
     };
+
+    useEffect(()=>{
+        if(error){
+            alert.error(error);
+            dispatch({type:"CLEAR_ERRORS"})
+        }
+        if(alertMessage){
+            alert.success(alertMessage);
+            dispatch({type:"CLEAR_MESSAGE"});
+        }
+    },[alert, error, alertMessage,dispatch])
+
+
     return (
         <div className='contact'>
             <div className="contactRightBar"></div>
@@ -43,7 +64,7 @@ const Contact = () => {
                     />
 
 
-                    <Button variant="contained" type="submit">Send</Button>
+                    <Button variant="contained" type="submit" disabled={loading}>Send</Button>
                 </form>
             </div>
         </div>

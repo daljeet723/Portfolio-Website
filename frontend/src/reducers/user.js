@@ -151,12 +151,24 @@ export const updateUserReducer = createReducer({}, {
         state.error = action.payload;
     },
 
-    "CLEAR_ERROR": (state) => {
+    "CONTACT_USER_REQUEST" :(state)=>{
+        state.loading = true
+    },
+    "CONTACT_USER_SUCCESS" :(state,action)=>{
+        state.loading = false;
+        state.message = action.payload
+    },
+    "CONTACT_USER_FAILURE" :(state,action)=>{
+        state.loading = false;
+        state.error = action.payload
+    },
+
+
+    "CLEAR_ERRORS": (state) => {
         state.error = null;
     },
     "CLEAR_MESSAGE": (state) => {
         state.message = null;
     },
 
-
-})
+});

@@ -241,3 +241,32 @@ export const deleteProject = (id) => async (dispatch) => {
         })
     }
 }
+
+export const contactUser =(name, email,message)=> async (dispatch) =>{
+    try {
+        dispatch({
+            type:"CONTACT_USER_REQUEST"
+        });
+
+        const {data} = await axios.post("/api/v1/contact",{
+            name, email,message
+        },
+        {
+            headers: {
+                "content-type": "application/json"
+            },
+        });
+
+        dispatch({
+            type:"CONTACT_USER_SUCCESS",
+            payload:data.message
+        })
+
+        
+    } catch (error) {
+        dispatch({
+            type:"CONTACT_USER_FAILURE",
+            payload: error.response.data.message
+        })
+    }
+}

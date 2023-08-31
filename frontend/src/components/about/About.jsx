@@ -1,21 +1,29 @@
 import React from 'react'
 import "./About.css";
 import { Typography } from '@mui/material';
-const About = () => {
+
+
+const About = ({ about }) => {
     return (
         <div className="about">
-            <div className="aboutContainer1">
-                <Typography>This is sample quote</Typography>
+            <div className="aboutContainer">
+                <Typography>{about.quote}</Typography>
             </div>
             <div className="aboutContainer2">
                 <div>
-                    <img src="https://images.pexels.com/photos/3772510/pexels-photo-3772510.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    <img src={about.avatar.url}
                         alt="profile"
                         className='aboutAvatar' />
-                    <Typography variant="h4"
-                        style={{ margin: "1vmax 0", color: "black" }}
-                    > Daljeet </Typography>
-                    <Typography>Software Engineer</Typography>
+
+                    <Typography variant="h6"
+                        style={{ margin: "1vmax 0", color: "black" }}>
+                        {about.name}
+                    </Typography>
+                    <Typography>{about.title}</Typography>
+
+                    <Typography style={{ margin: "1vmax 0", textAlign: "center" }}>
+                        {about.subtitle}
+                    </Typography>
                 </div>
                 <div>
                     <Typography
@@ -23,11 +31,9 @@ const About = () => {
                             wordSpacing: "5px",
                             lineHeight: "50px",
                             letterSpacing: "5px",
-                            textAlign: "right",
-                        }}
-                    >
-                        This is description item
-                        example loreum lypsm
+                            textAlign: "Justify",
+                        }}>
+                        {about.description}
                     </Typography>
                 </div>
             </div>

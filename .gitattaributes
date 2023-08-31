@@ -1,5 +1,0 @@
-*.html linguist-detectable=false
-*.React linguist-detectable=true
-*.Node JS linguist-detectable=true
-*.Three JS linguist-detectable=true
-*.Mongo DB linguist-detectable=true
